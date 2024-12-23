@@ -1,0 +1,21 @@
+{% extends 'news/base.html' %}
+{% load static %}
+{% block title %}
+	<title>{{ news.title }}</title>
+{% endblock %}
+    
+{% block content %}
+    <section id="sliderSection">
+        <div class="col-lg-8 col-md-8 col-sm-8">
+            <div class="slick_slider">
+                <div class="">
+	                <h2>{{ news.title }}</h2>
+                    <p>Published date: {{ news.published_time }}</p>
+                    <img src="{{ news.image.url }}">
+                    <p>{{ news.body }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
