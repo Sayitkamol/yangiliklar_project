@@ -1,3 +1,5 @@
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.db import models
 from django.urls import reverse
@@ -37,7 +39,9 @@ class News(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('news_detail_page', args=[self.slug])
+        return reverse("news_detail_page", args=[self.slug])
+
+
 
 class Contact(models.Model):
     name = models.CharField(max_length=150)

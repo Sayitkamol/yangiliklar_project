@@ -12,11 +12,11 @@
                 <p>Published date: {{ news.published_time }}</p>
                 <img src="{{ news.image.url }}">
                 <p>{{ news.body }}</p>
-                    
             </div>
             <div class="card-footer text-center">
         <button class="btn btn-orange"><a href="{% url 'news_update_page' news.slug %}">Tahrirlash</a></button>
         <button class="btn btn-red"><a href="{% url 'news_delete_page' news.slug %}">O'chirish</a></button>
+        <button class="btn btn-green"><a href="{% url 'news_create_page' %}">Qo'shish</a></button>
     </div>
         </div>
     

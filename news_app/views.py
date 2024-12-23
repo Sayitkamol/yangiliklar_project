@@ -4,23 +4,33 @@ from django.urls import reverse_lazy
 
 from .models import News, Category
 from .forms import ContactForm
-from django.views.generic import TemplateView, ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import TemplateView, ListView, DetailView, UpdateView, DeleteView, CreateView
 
 
 def news_list(request):
-    news_list = News.objects.filter(status=News.Status.Published)
-    # news_list = News.published.all()
+    # news_list = News.objects.filter(status=News.Status.Published)
+    news_list = News.published.all()
     context = {
         'news_list': news_list
     }
     return render(request, 'news/news_list.html', context)
 
+""" News Detail Page """
 def news_detail(request, news):
     news = get_object_or_404(News, slug=news, status=News.Status.Published)
     context = {
         "news": news
     }
     return render(request, 'news/news_detail.html', context)
+
+# class NewsDetailView(DetailView):
+#     model = News
+#     template_name = 'news/news_detail.html'
+#     def get_context_data(self, news, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['news'] = get_object_or_404(News, slug=news, status=News.Status.Published)
+#
+#         return context
 
 """ Home Page View """
 ''' # Funksiya yordamida'''
@@ -170,3 +180,8 @@ class NewsDeleteView(DeleteView):
     model = News
     template_name = 'crud/news_delete.html'
     success_url = reverse_lazy('homepage')
+
+class NewsCreateView(CreateView):
+    model = News
+    fields = ('title','slug', 'body', 'image','category', 'status')
+    template_name = 'crud/news_create.html'
