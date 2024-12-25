@@ -185,3 +185,4 @@ class NewsCreateView(CreateView):
     model = News
     fields = ('title','slug', 'body', 'image','category', 'status')
     template_name = 'crud/news_create.html'
+    success_url = reverse_lazy('homepage')

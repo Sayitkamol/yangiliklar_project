@@ -1,0 +1,29 @@
+{% extends 'news/base.html' %}
+{% load static %}
+{% block title %}
+	Foydalanuvchi profili
+{% endblock %}
+
+{% block content %}
+    <section id="navArea">
+    <div class="list-footer-display">
+        
+    <h3>Hush kelibsiz! {{ user.username }}</h3>
+    <button type="submit"><a href="{% url 'home_page' %}">Home Page</a></button>
+    <button type="submit"><a href="{% url 'logout' %}">Logout</a></button>
+    </div>
+    
+    <h2>Siz haqingizdagi ma'lumotlar</h2>
+    <label>Username: </label> <input value="{{ user.username }}" readonly placeholder="kiritilmagan"><br>
+    <label>Emailingiz: </label> <input value="{{ user.email }}" readonly placeholder="kiritilmagan"><br>
+    <label>Ismingiz: </label> <input value="{{ user.first_name }}" readonly placeholder="kiritilmagan"><br>
+    <label>Familiyangiz: </label> <input value="{{ user.last_name }}" readonly placeholder="kiritilmagan"><br>
+    <br>
+    <h4><a href="{% url 'password_change' %}" style="color: red">Parolni almashtirish</a></h4>
+    <br>
+    </section>
+    
+    
+    
+    
+{% endblock %}

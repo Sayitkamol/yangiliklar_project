@@ -1,0 +1,16 @@
+{% extends 'news/base.html' %}
+{% load static %}
+{% block title %}
+	Login sahifasi
+{% endblock %}
+{% block content %}
+	
+    <h2>Web-saytga kirish -login</h2>
+    <p>Iltimos, sayitga kirish uchun quyidagi foormani to'ldiring!</p>
+    <form method="post"> 
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    
+{% endblock %}
