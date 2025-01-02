@@ -5,6 +5,10 @@ name = "pypi"
 
 [packages]
 django = "==4.2"
+django-hitcount = "*"
+django-modeltranslation = "*"
+python-decouple = "*"
+whitenoise = "*"
 
 [dev-packages]
 

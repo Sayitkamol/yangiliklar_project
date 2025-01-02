@@ -1,10 +1,16 @@
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-
-from .models import News, Category
-from .forms import ContactForm
 from django.views.generic import TemplateView, ListView, DetailView, UpdateView, DeleteView, CreateView
+from hitcount.utils import get_hitcount_model
+
+from config.custom_permissions import OnlyLoggedSuperUser
+from .models import News, Category
+from .forms import ContactForm, CommentForm
+from hitcount.views import HitCountDetailView, HitCountMixin
 
 
 def news_list(request):
@@ -16,21 +22,81 @@ def news_list(request):
     return render(request, 'news/news_list.html', context)
 
 """ News Detail Page """
+
+
+class PostCountHitDetailView(HitCountDetailView):
+    model = News        # your model goes here
+    count_hit = True    # set to True if you want it to try and count the hit
+
 def news_detail(request, news):
     news = get_object_or_404(News, slug=news, status=News.Status.Published)
+    context = {}
+    # hitcount logic
+    hit_count = get_hitcount_model().objects.get_for_object(news)
+    hits = hit_count.hits
+    hitcontext = context['hitcount'] = {'pk': hit_count.pk}
+    hit_count_response = HitCountMixin.hit_count(request,hit_count)
+    if hit_count_response.hit_counted:
+        hits = hits + 1
+        hitcontext['hit_counted'] = hit_count_response.hit_counted
+        hitcontext['hit_message'] = hit_count_response.hit_message
+        hitcontext['total_hits'] = hits
+
+    # Camment
+    comments = news.comments.filter(active=True)
+    comments_count = comments.count()
+    new_comment = None 
+    if request.method == "POST":
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            # yangi komment obyektini yaratamiz lekin DB ga saqlamaymiz
+            new_comment = comment_form.save(commit=False)
+            new_comment.news = news
+            # Izoh egasini so'rov yuborayotgan userga bog'ladik
+            new_comment.user = request.user
+            # DB ga saqlaymiz
+            new_comment.save()
+            comment_form = CommentForm()
+    else:
+        comment_form = CommentForm()
+
     context = {
-        "news": news
+        "news": news,
+        'comments': comments,
+        'comments_count': comments_count,
+        'new_comment': new_comment,
+        'comment_form': comment_form,
     }
     return render(request, 'news/news_detail.html', context)
 
-# class NewsDetailView(DetailView):
-#     model = News
-#     template_name = 'news/news_detail.html'
-#     def get_context_data(self, news, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['news'] = get_object_or_404(News, slug=news, status=News.Status.Published)
-#
-#         return context
+class NewsDetailView(DetailView):
+    model = News
+    template_name = 'news/news_detail.html'
+    http_method_names = ['get', 'post']
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        news = self.object
+        comments = news.comments.filter(active=True)
+        new_comment = None
+
+        if self.request.method == "POST":
+            comment_form = CommentForm(data=self.request.POST)
+            if comment_form.is_valid():
+                new_comment = comment_form.save(commit=False)
+                new_comment.news = news
+                new_comment.user = self.request.user
+                new_comment.save()
+                comment_form = CommentForm()
+        else:
+            comment_form = CommentForm()
+
+        context['comments'] = comments
+        context['new_comment'] = new_comment
+        context['comment_form'] = comment_form
+        return context
+
 
 """ Home Page View """
 ''' # Funksiya yordamida'''
@@ -171,18 +237,38 @@ class AvtoNewsView(ListView):
         news = self.model.published.all().filter(category__name='Avto')
         return news
 
-class NewsUpdateView(UpdateView):
+class NewsUpdateView(OnlyLoggedSuperUser, UpdateView):
     model = News
     fields = ('title', 'body', 'image','category', 'status')
     template_name = 'crud/news_edit.html'
 
-class NewsDeleteView(DeleteView):
+class NewsDeleteView(OnlyLoggedSuperUser, DeleteView):
     model = News
     template_name = 'crud/news_delete.html'
     success_url = reverse_lazy('homepage')
 
-class NewsCreateView(CreateView):
+
+class NewsCreateView(OnlyLoggedSuperUser, CreateView):
     model = News
-    fields = ('title','slug', 'body', 'image','category', 'status')
+    fields = ('title', 'title_uz', 'title_en', 'title_ru', 'slug', 'body', 'body_uz', 'body_en', 'body_ru', 'image','category', 'status')
     template_name = 'crud/news_create.html'
-    success_url = reverse_lazy('homepage')
+    success_url = reverse_lazy('home_page')
+
+@login_required()
+@user_passes_test(lambda u: u.is_superuser)
+def admin_page_view(request):
+    admin_users = User.objects.filter(is_superuser=True)
+    context = {
+        'admin_users': admin_users,
+    }
+    return render(request, 'pages/admin_page.html', context)
+
+
+class SearchResultsListView(ListView):
+    model = News
+    template_name = 'news/search_result.html'
+    context_object_name = 'barcha_yangiliklar'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        return News.objects.filter(Q(title__icontains=query)|Q(body__icontains=query))

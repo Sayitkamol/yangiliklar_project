@@ -7,10 +7,12 @@
 	
     <h2>Web-saytga kirish -login</h2>
     <p>Iltimos, sayitga kirish uchun quyidagi foormani to'ldiring!</p>
-    <form method="post"> 
+    <h5>Agar parolingizni unutgan bo'lsangiz, <a href="{% url 'password_reset' %}" class="text-danger">qayta tiklang</a></h5>
+    <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Login</button>
     </form>
-    
+    <h4>Agar foydalanuvchi profilingiz bo'lmasa <a href="{% url 'user_register' %}" style="color:red">ro'yhatdan o'tish</a>ingiz mumkin</h4>
+
 {% endblock %}

@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-02 11:12+0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: config/settings.py:123
+msgid "Uzbek"
+msgstr ""
+
+#: config/settings.py:124
+msgid "English"
+msgstr ""
+
+#: config/settings.py:125
+msgid "Russian"
+msgstr ""
+
+#: templates/news/home.html:6
+msgid " Bosh sahifa "
+msgstr "Home Page"
+
+#: templates/news/home.html:27
+msgid " So'ngi yangiliklar "
+msgstr "Latest news"
+
+#: templates/news/home.html:37 templates/news/home.html:63
+#: templates/news/home.html:77 templates/news/home.html:98
+#: templates/news/home.html:110 templates/news/home.html:129
+#: templates/news/home.html:141 templates/news/home.html:161
+#: templates/news/home.html:175 templates/news/home.html:195
+msgid " ko'rish"
+msgstr "view"
+
+#: templates/news/home.html:54
+msgid " Mahalliy "
+msgstr "Local"
+
+#: templates/news/home.html:90
+msgid " Xorij "
+msgstr "Abroad"
+
+#: templates/news/home.html:121
+msgid " Texnalogiya "
+msgstr "Tecnology"
+
+#: templates/news/home.html:152
+msgid " Avto "
+msgstr "Avto"
+
+#: templates/news/home.html:189
+msgid " Sport "
+msgstr "Sport"
+
+#: templates/news/home.html:250
+msgid " Categoriyalar "
+msgstr "Categorys"
+
+#: templates/news/home.html:252
+msgid " Categoriyani tanlang "
+msgstr "Select category"
+
+#: templates/news/home.html:259
+msgid " Links "
+msgstr ""

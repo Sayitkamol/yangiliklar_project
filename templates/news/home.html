@@ -1,7 +1,9 @@
 {% extends 'news/base.html' %}
 {% load static %}
+{% load i18n %}
+{% load hitcount_tags %}
 {% block title %}
-	Bosh sahifa
+	{% blocktrans %} Bosh sahifa {% endblocktrans %}
 {% endblock %}
 {% block content %}
   <section id="sliderSection">
@@ -20,14 +22,20 @@
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4">
         <div class="latest_post">
-          <h2><span>So'ngi yangiliklar</span></h2>
+          <h2>
+          <span>
+          {% blocktrans %} So'ngi yangiliklar {% endblocktrans %}
+          </span>
+          </h2>
           <div class="latest_post_container">
             <div id="prev-button"><i class="fa fa-chevron-up"></i></div>
             <ul class="latest_postnav">
                 {% for news in news_list %}
                     <li>
                     <div class="media"> <a href="{{ news.get_absolute_url }}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
-                        <div class="media-body"> <a href="{{ news.get_absolute_url }}" class="catg_title"> {{ news.title | truncatewords:9 }}</a> </div>
+                        <div class="media-body"> <a href="{{ news.get_absolute_url }}" class="catg_title"> {{ news.title | truncatewords:9 }}</a> 
+                        <p>{% blocktrans %} ko'rish{% endblocktrans %}: <i class="fa-solid fa-eye" aria-hidden="true"></i>{% get_hit_count for news %}</p>
+                        </div>
                     </div>
                     </li>
                 {% endfor %}
@@ -43,7 +51,7 @@
       <div class="col-lg-8 col-md-8 col-sm-8">
         <div class="left_content">
           <div class="single_post_content">
-            <h2><span>Mahalliy</span></h2>
+            <h2><span>{% blocktrans %} Mahalliy {% endblocktrans %}</span></h2>
             <div class="single_post_content_left">
               <ul class="business_catgnav  wow fadeInDown">
                 {% for news in mahalliy_news_list %}
@@ -52,6 +60,7 @@
                         <figure class="bsbig_fig"> <a href="{{ news.get_absolute_url }}" class="featured_img"> <img alt="" src="{{ news.image.url }}"> <span class="overlay"></span> </a>
                         <figcaption> <a href="{{ news.get_absolute_url }}">{{ news.title | truncatewords:8 }}</a> </figcaption>
                         <p>{{ news.title | truncatewords:20 }}</p>
+                        <p>{% blocktrans %} ko'rish{% endblocktrans %}: <i class="fa-solid fa-eye" aria-hidden="true"></i>{% get_hit_count for news %}</p>
                         </figure>
                     </li>
                     {% endif %}
@@ -64,7 +73,10 @@
                       {% if forloop.counter > 1 %}
                   	    <li>
                         <div class="media wow fadeInDown"> <a href="{{ news.get_absolute_url }}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
-                        <div class="media-body"> <a href="{{ news.get_absolute_url }}" class="catg_title"> {{ news.title | truncatewords:15 }}</a> </div>
+                        <div class="media-body"> <a href="{{ news.get_absolute_url }}" class="catg_title"> {{ news.title | truncatewords:15 }}</a> 
+                        <p>{% blocktrans %} ko'rish{% endblocktrans %}: <i class="fa-solid fa-eye" aria-hidden="true"></i>{% get_hit_count for news %}</p>
+                        </div>
+                            
                         </div>
                         </li>
                       {% endif %}
@@ -75,7 +87,7 @@
           <div class="fashion_technology_area">
             <div class="fashion">
               <div class="single_post_content">
-                <h2><span>Xorij</span></h2>
+                <h2><span>{% blocktrans %} Xorij {% endblocktrans %}</span></h2>
                 <ul class="business_catgnav wow fadeInDown">
                     {% for news in xorij_news_list %}
                         {% if forloop.first %}
@@ -83,6 +95,7 @@
                                 <figure class="bsbig_fig"> <a href="{{ news.get_absolute_url }}" class="featured_img"> <img alt="" src="{{ news.image.url }}"> <span class="overlay"></span> </a>
                                 <figcaption> <a href="{{ news.get_absolute_url }}">{{ news.title | truncatewords:8 }}</a> </figcaption>
                                 <p>{{ news.body | truncatewords:20 }}</p>
+                                <p>{% blocktrans %} ko'rish{% endblocktrans %}: <i class="fa-solid fa-eye" aria-hidden="true"></i>{% get_hit_count for news %}</p>
                                 </figure>
                             </li>
                         {% endif %}
@@ -92,8 +105,10 @@
                     {% for news in xorij_news_list %}
                         {% if forloop.counter > 1 %}
                     	<li>
-                        <div class="media wow fadeInDown"> <a href="{% url 'news_detail_page' news.pk %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
-                        <div class="media-body"> <a href="{% url 'news_detail_page' news.pk %}" class="catg_title"> {{ news.title | truncatewords:8 }}</a> </div>
+                        <div class="media wow fadeInDown"> <a href="{{ news.get_absolute_url }}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
+                        <div class="media-body"> <a href="{{ news.get_absolute_url }}" class="catg_title"> {{ news.title | truncatewords:8 }}</a>                         
+                        <p>{% blocktrans %} ko'rish{% endblocktrans %}: <i class="fa-solid fa-eye" aria-hidden="true"></i>{% get_hit_count for news %}</p>
+                        </div>
                         </div>
                         </li>
                         {% endif %}
@@ -103,14 +118,15 @@
             </div>
             <div class="technology">
               <div class="single_post_content">
-                <h2><span>Texnalogiya</span></h2>
+                <h2><span>{% blocktrans %} Texnalogiya {% endblocktrans %}</span></h2>
                 <ul class="business_catgnav">
                     {% for news in  texno_news_list %}
                         {% if forloop.first %}
                     	<li>
-                        <figure class="bsbig_fig wow fadeInDown"> <a href="{% url 'news_detail_page' news.pk %}" class="featured_img"> <img alt="" src="{{ news.image.url }}"> <span class="overlay"></span> </a>
-                        <figcaption> <a href="{% url 'news_detail_page' news.pk %}">{{ news.title | truncatewords:8 }}</a> </figcaption>
+                        <figure class="bsbig_fig wow fadeInDown"> <a href="{{ news.get_absolute_url }}" class="featured_img"> <img alt="" src="{{ news.image.url }}"> <span class="overlay"></span> </a>
+                        <figcaption> <a href="{{ news.get_absolute_url }}">{{ news.title | truncatewords:8 }}</a> </figcaption>
                         <p>{{ news.body | truncatewords:20 }}</p>
+                        <p>{% blocktrans %} ko'rish{% endblocktrans %}: <i class="fa-solid fa-eye" aria-hidden="true"></i>{% get_hit_count for news %}</p>
                         </figure>
                         </li>
                         {% endif %}
@@ -120,8 +136,10 @@
                     {% for news in texno_news_list %}
                         {% if forloop.counter > 1 %}
                     	<li>
-                        <div class="media wow fadeInDown"> <a href="{% url 'news_detail_page' news.pk %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
-                        <div class="media-body"> <a href="{% url 'news_detail_page' news.pk %}" class="catg_title"> {{ news.title | truncatewords:8 }}</a> </div>
+                        <div class="media wow fadeInDown"> <a href="{{ news.get_absolute_url }}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
+                            <div class="media-body"> <a href="{{ news.get_absolute_url }}" class="catg_title"> {{ news.title | truncatewords:8 }}</a> 
+                        <p>{% blocktrans %} ko'rish{% endblocktrans %}: <i class="fa-solid fa-eye" aria-hidden="true"></i>{% get_hit_count for news %}</p>
+                            </div>
                         </div>
                         </li>
                         {% endif %}
@@ -130,51 +148,17 @@
               </div>
             </div>
           </div>
-{#          <div class="single_post_content">#}
-{#            <h2><span>Photography</span></h2>#}
-{#            <ul class="photograph_nav  wow fadeInDown">#}
-{#              <li>#}
-{#                <div class="photo_grid">#}
-{#                  <figure class="effect-layla"> <a class="fancybox-buttons" data-fancybox-group="button" href="images/photograph_img2.jpg" title="Photography Ttile 1"> <img src="{% static 'images/photograph_img2.jpg' %}" alt=""/></a> </figure>#}
-{#                </div>#}
-{#              </li>#}
-{#              <li>#}
-{#                <div class="photo_grid">#}
-{#                  <figure class="effect-layla"> <a class="fancybox-buttons" data-fancybox-group="button" href="{% static 'images/photograph_img3.jpg' %}" title="Photography Ttile 2"> <img src="images/photograph_img3.jpg" alt=""/> </a> </figure>#}
-{#                </div>#}
-{#              </li>#}
-{#              <li>#}
-{#                <div class="photo_grid">#}
-{#                  <figure class="effect-layla"> <a class="fancybox-buttons" data-fancybox-group="button" href="{% static 'images/photograph_img4.jpg' %}" title="Photography Ttile 3"> <img src="images/photograph_img4.jpg" alt=""/> </a> </figure>#}
-{#                </div>#}
-{#              </li>#}
-{#              <li>#}
-{#                <div class="photo_grid">#}
-{#                  <figure class="effect-layla"> <a class="fancybox-buttons" data-fancybox-group="button" href="{% static 'images/photograph_img4.jpg' %}" title="Photography Ttile 4"> <img src="images/photograph_img4.jpg" alt=""/> </a> </figure>#}
-{#                </div>#}
-{#              </li>#}
-{#              <li>#}
-{#                <div class="photo_grid">#}
-{#                  <figure class="effect-layla"> <a class="fancybox-buttons" data-fancybox-group="button" href="{% static 'images/photograph_img2.jpg' %}" title="Photography Ttile 5"> <img src="images/photograph_img2.jpg" alt=""/> </a> </figure>#}
-{#                </div>#}
-{#              </li>#}
-{#              <li>#}
-{#                <div class="photo_grid">#}
-{#                  <figure class="effect-layla"> <a class="fancybox-buttons" data-fancybox-group="button" href="{% static 'images/photograph_img3.jpg' %}" title="Photography Ttile 6"> <img src="images/photograph_img3.jpg" alt=""/> </a> </figure>#}
-{#                </div>#}
-{#              </li>#}
-{#            </ul>#}
-{#          </div>#}
           <div class="single_post_content">
-            <h2><span>Avto</span></h2>
+            <h2><span>{% blocktrans %} Avto {% endblocktrans %}</span></h2>
             <div class="single_post_content_left">
               <ul class="business_catgnav">
                   {% for news in avto_news_list %}
                       {% if forloop.first %}
                         <li>
-                        <figure class="bsbig_fig  wow fadeInDown"> <a class="featured_img" href="{% url 'news_detail_page' news.pk %}"> <img src="{{ news.image.url }}" alt=""> <span class="overlay"></span> </a>
-                        <figcaption> <a href="{% url 'news_detail_page' news.pk %}">{{ news.title | truncatewords:8 }}</a> </figcaption>
+                        <figure class="bsbig_fig  wow fadeInDown"> <a class="featured_img" href="{{ news.get_absolute_url }}"> <img src="{{ news.image.url }}" alt=""> <span class="overlay"></span> </a>
+                        <figcaption> <a href="{{ news.get_absolute_url }}">{{ news.title | truncatewords:8 }}</a> </figcaption>
                         <p>{{ news.body | truncatewords:20 }}</p>
+                        <p>{% blocktrans %} ko'rish{% endblocktrans %}: <i class="fa-solid fa-eye" aria-hidden="true"></i>{% get_hit_count for news %}</p>
                         </figure>
                         </li>	
                       {% endif %}
@@ -186,8 +170,10 @@
                   {% for news in avto_news_list %}
                       {% if forloop.counter > 1 %}
                   	<li>
-                    <div class="media wow fadeInDown"> <a href="{% url 'news_detail_page' news.pk %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
-                    <div class="media-body"> <a href="{% url 'news_detail_page' news.pk %}" class="catg_title"> {{ news.title | truncatewords:8 }}</a> </div>
+                    <div class="media wow fadeInDown"> <a href="{{ news.get_absolute_url }}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
+                    <div class="media-body"> <a href="{{ news.get_absolute_url }}" class="catg_title"> {{ news.title | truncatewords:8 }}</a>
+                        <p>{% blocktrans %} ko'rish{% endblocktrans %}: <i class="fa-solid fa-eye" aria-hidden="true"></i>{% get_hit_count for news %}</p>
+                    </div>
                     </div>
                     </li>
                       {% endif %}
@@ -200,12 +186,13 @@
       <div class="col-lg-4 col-md-4 col-sm-4">
         <aside class="right_content">
           <div class="single_sidebar">
-            <h2><span>Sport</span></h2>
+            <h2><span>{% blocktrans %} Sport {% endblocktrans %}</span></h2>
             <ul class="spost_nav">
                 {% for news in sport_news_list %}
                 	<li>
-                    <div class="media wow fadeInDown"> <a href="{% url 'news_detail_page' news.pk %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
-                    <div class="media-body"> <a href="{% url 'news_detail_page' news.pk %}" class="catg_title"> {{ news.title | truncatewords:8 }}</a> </div>
+                    <div class="media wow fadeInDown"> <a href="{{ news.get_absolute_url }}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
+                    <div class="media-body"> <a href="{{ news.get_absolute_url }}" class="catg_title"> {{ news.title | truncatewords:8 }}</a> </div>
+                        <p>{% blocktrans %} ko'rish{% endblocktrans %}: <i class="fa-solid fa-eye" aria-hidden="true"></i>{% get_hit_count for news %}</p>
                     </div>
                     </li>
                 {% endfor %}
@@ -260,16 +247,16 @@
 {#            <h2><span>Sponsor</span></h2>#}
 {#            <a class="sideAdd" href="#"><img src="{% static 'images/add_img.jpg' %}" alt=""></a> </div>#}
           <div class="single_sidebar wow fadeInDown">
-            <h2><span>Categoriyalar</span></h2>
+            <h2><span>{% blocktrans %} Categoriyalar {% endblocktrans %}</span></h2>
             <select class="catgArchive">
-                <option>Categoriyani tanlang</option>
+                <option>{% blocktrans %} Categoriyani tanlang {% endblocktrans %}</option>
                 {% for category in categories %}
                     <option>{{ category.name }}</option>
                 {% endfor %}
             </select>
           </div>
           <div class="single_sidebar wow fadeInDown">
-            <h2><span>Links</span></h2>
+            <h2><span>{% blocktrans %} Links {% endblocktrans %}</span></h2>
             <ul>
               <li><a href="#">Blog</a></li>
               <li><a href="#">Rss Feed</a></li>
